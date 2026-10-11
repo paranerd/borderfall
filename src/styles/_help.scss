@@ -132,6 +132,26 @@
   }
 }
 @media (max-height: 500px) and (orientation: landscape) {
+  .modal.help-modal {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(
+      100dvh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom))
+    );
+  }
+  .help-modal > :not(.help-content) {
+    flex-shrink: 0;
+  }
+  .help-modal .help-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+  .modal-layer:has(.help-modal) {
+    padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right))
+      max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+  }
   .control-dock {
     min-height: 52px;
   }

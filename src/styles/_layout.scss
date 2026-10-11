@@ -1,0 +1,70 @@
+// The map and dock backgrounds reach the screen edges. Insets protect controls.
+.app {
+  --header-height: 54px;
+  --dock-horizontal-padding: 18px;
+  --dock-vertical-padding: 12px;
+  --map-control-inset: 12px;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.topbar {
+  height: calc(var(--header-height) + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) max(12px, env(safe-area-inset-right)) 0
+    max(12px, env(safe-area-inset-left));
+}
+
+.workspace {
+  padding: 0;
+}
+
+.map-panel,
+.control-dock {
+  border: 0;
+  border-radius: 0;
+}
+
+.control-dock {
+  padding-left: max(var(--dock-horizontal-padding), env(safe-area-inset-left));
+  padding-right: max(var(--dock-horizontal-padding), env(safe-area-inset-right));
+  padding-bottom: calc(var(--dock-vertical-padding) + env(safe-area-inset-bottom));
+}
+
+.scoreboard-widget {
+  left: max(var(--map-control-inset), env(safe-area-inset-left));
+}
+
+.map-hint,
+.zoom-reset {
+  right: max(var(--map-control-inset), env(safe-area-inset-right));
+}
+
+@media (max-width: 760px) {
+  .app {
+    --dock-horizontal-padding: 12px;
+    --dock-vertical-padding: 10px;
+    --map-control-inset: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .app {
+    --dock-horizontal-padding: 8px;
+    --dock-vertical-padding: 9px;
+  }
+}
+
+@media (max-height: 700px) and (max-width: 760px) {
+  .app {
+    --header-height: 42px;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .app {
+    --header-height: 38px;
+    --dock-horizontal-padding: 12px;
+    --dock-vertical-padding: 7px;
+  }
+}

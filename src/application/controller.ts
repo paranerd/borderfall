@@ -587,7 +587,12 @@ export async function startApplication(platform: Platform) {
     } else if (modal === 'help') {
       const h = HELP[helpPage];
       content = `<span class="eyebrow">DAS KOMMANDANTEN-HANDBUCH</span><h2>Ein Plan für die Welt.</h2><div class="help-tabs">${HELP.map((p, i) => `<button class="${i === helpPage ? 'chosen' : ''}" data-help="${i}" aria-pressed="${i === helpPage}">${p.tab}</button>`).join('')}</div><div class="help-content"><h3>${helpPage === 0 ? `${TERRITORIES.length} Gebiete. ${activeMap.name}.` : h.title}</h3><p>${h.text}</p><p>${h.text2}</p><div class="help-example">${helpPage === 1 ? CONTINENTS.map((c) => `${c.name} +${c.bonus}`).join(' · ') : h.example}</div></div><div class="help-bottom"><span>${helpPage + 1} / ${HELP.length}</span><button class="primary-button" data-modal="${helpPage === 4 ? 'close' : 'help-next'}">${helpPage === 4 ? 'Los geht’s' : 'Weiter'} ${icon('arrow')}</button></div>`;
-      $('#modal-layer').innerHTML = modalWrapper(content, 'Spielregeln und Bedienung');
+      $('#modal-layer').innerHTML = modalWrapper(
+        content,
+        'Spielregeln und Bedienung',
+        true,
+        'help-modal',
+      );
     } else if (modal === 'cards') {
       const cards = g.players[0].cards;
       const pageSize = cardPageSize();
