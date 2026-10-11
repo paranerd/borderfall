@@ -1,0 +1,703 @@
+.modal-layer.combat-layer {
+  background: #0c201a66;
+  backdrop-filter: blur(2px);
+}
+.modal.combat-modal {
+  width: 490px;
+  padding: 28px 30px;
+  border: 1px solid #d8e1d5;
+}
+.combat-modal .eyebrow {
+  color: #788b7b;
+  display: block;
+  text-align: center;
+}
+.combat-modal h2 {
+  font-size: 25px;
+  text-align: center;
+  line-height: 1.15;
+  margin: 12px 20px 22px;
+  overflow-wrap: anywhere;
+}
+.combat-modal h2 > span {
+  color: #7e9285;
+  font-weight: 400;
+}
+.combat-troops {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.combat-troops > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background: #e9ede4;
+  border: 1px solid #d9e1d4;
+  border-radius: 12px;
+  min-width: 0;
+}
+.combat-avatar {
+  background: var(--combat-color);
+  border-radius: 8px;
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  flex: none;
+}
+.combat-troops b {
+  font-size: 12px;
+  display: block;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.combat-troops small {
+  font-size: 9px;
+  color: #7a897b;
+  display: block;
+  margin-top: 2px;
+}
+.combat-troops strong {
+  margin-left: auto;
+  font: 600 25px var(--display);
+  text-align: right;
+  flex: none;
+}
+.combat-troops strong small {
+  font: 9px var(--font);
+}
+.combat-rolls {
+  --die-size: 60px;
+  --dice-gap: 13px;
+  --dice-label: 54px;
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.combat-dice-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.combat-dice-row > span {
+  font-size: 10px;
+  font-weight: 600;
+  width: var(--dice-label);
+  flex: none;
+  color: #6e8174;
+}
+.combat-dice-track {
+  display: flex;
+  gap: var(--dice-gap);
+}
+.combat-die {
+  width: var(--die-size);
+  height: var(--die-size);
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  padding: 11px;
+  gap: 5px;
+  border-radius: 12px;
+  background: var(--dice-color);
+  color: #183b32;
+  border: 1px solid #ffffff66;
+  box-shadow:
+    inset 0 2px 3px #ffffff44,
+    0 3px 5px #142e2515;
+  transition:
+    opacity 0.2s,
+    box-shadow 0.2s;
+  position: relative;
+  flex: none;
+}
+.combat-die i {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #17382f;
+}
+.combat-die.unused {
+  opacity: 0.3;
+}
+.combat-die.winning {
+  box-shadow:
+    inset 0 2px 3px #ffffff44,
+    0 0 0 2px #375b45,
+    0 3px 7px #142e2520;
+}
+.combat-die.empty {
+  order: 3;
+  display: grid;
+  place-items: center;
+  background: #e6eadf;
+  color: #9caa9b;
+  font-size: 19px;
+  box-shadow: none;
+  border-color: transparent;
+}
+.combat-comparisons {
+  margin-left: calc(var(--dice-label) + 12px);
+  display: flex;
+  gap: var(--dice-gap);
+  height: 55px;
+  align-items: center;
+}
+.combat-comparisons > span {
+  width: var(--die-size);
+  font-size: 12px;
+  font-weight: 650;
+  text-align: center;
+  position: relative;
+}
+.combat-comparisons > span:before,
+.combat-comparisons > span:after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  height: 5px;
+  top: -7px;
+  border-left: 1px solid #a9b8a4;
+}
+.combat-comparisons > span:after {
+  top: auto;
+  bottom: -7px;
+}
+.combat-comparisons small {
+  display: block;
+  font-size: 9px;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.combat-comparisons .defender-loss {
+  color: #7f4937;
+}
+.combat-comparisons .attacker-loss {
+  color: #2e6655;
+}
+.combat-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+.combat-footer button {
+  flex: 1;
+  min-height: 42px;
+  font-size: 12px;
+}
+.combat-footer .secondary-button {
+  color: #6b7d6c;
+  border-color: #c5cfbf;
+}
+.combat-footer .primary-button {
+  background: #34543f;
+  border-color: #34543f;
+  color: #f1f5e9;
+}
+.combat-rolls.rolling .combat-die:not(.empty) {
+  animation: combat-tumble 0.48s ease-in-out infinite alternate;
+}
+.combat-rolls.rolling .combat-die:nth-child(2) {
+  animation-delay: -0.24s;
+}
+.combat-rolls.rolling .combat-die:nth-child(3) {
+  animation-delay: -0.12s;
+}
+@keyframes combat-tumble {
+  from {
+    transform: translateY(-3px) rotate(-9deg) scale(0.96);
+  }
+  to {
+    transform: translateY(3px) rotate(9deg) scale(1.04);
+  }
+}
+@media (max-width: 600px) {
+  .modal.combat-modal {
+    padding: 24px 18px;
+    width: 450px;
+  }
+  .combat-modal h2 {
+    font-size: 22px;
+    margin: 12px 20px 18px;
+  }
+  .combat-troops {
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .combat-troops > div {
+    gap: 6px;
+    padding: 8px;
+  }
+  .combat-avatar {
+    width: 23px;
+    height: 23px;
+    font-size: 14px;
+  }
+  .combat-troops b {
+    max-width: 70px;
+    font-size: 10px;
+  }
+  .combat-troops small {
+    font-size: 8px;
+  }
+  .combat-troops strong {
+    font-size: 22px;
+  }
+  .combat-troops strong small {
+    font-size: 8px;
+  }
+  .combat-rolls {
+    --die-size: 48px;
+    --dice-gap: 10px;
+    --dice-label: 43px;
+  }
+  .combat-dice-row {
+    gap: 9px;
+  }
+  .combat-dice-row > span {
+    font-size: 9px;
+  }
+  .combat-die {
+    padding: 8px;
+    gap: 4px;
+    border-radius: 10px;
+  }
+  .combat-comparisons {
+    margin-left: calc(var(--dice-label) + 9px);
+    height: 47px;
+  }
+  .combat-footer {
+    margin-top: 14px;
+  }
+}
+@media (max-width: 360px) {
+  .modal.combat-modal {
+    padding: 22px 14px;
+  }
+  .combat-troops > div {
+    position: relative;
+    padding: 8px;
+    gap: 5px;
+  }
+  .combat-troops .combat-avatar {
+    display: none;
+  }
+  .combat-troops b {
+    max-width: 74px;
+  }
+  .combat-rolls {
+    --die-size: 44px;
+    --dice-gap: 9px;
+    --dice-label: 41px;
+  }
+  .combat-die {
+    padding: 7px;
+    gap: 4px;
+  }
+  .combat-modal h2 {
+    font-size: 20px;
+  }
+  .combat-footer button {
+    font-size: 11px;
+  }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .modal.combat-modal {
+    width: 580px;
+    padding: 15px 20px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 236px;
+    column-gap: 20px;
+  }
+  .combat-modal .eyebrow,
+  .combat-modal h2 {
+    grid-column: 1/-1;
+  }
+  .combat-modal h2 {
+    font-size: 21px;
+    margin: 6px 24px 12px;
+  }
+  .combat-troops {
+    grid-column: 1;
+    grid-row: 3;
+    grid-template-columns: 1fr;
+    margin: 0;
+    gap: 6px;
+    align-self: start;
+  }
+  .combat-troops > div {
+    padding: 6px 9px;
+  }
+  .combat-troops b {
+    max-width: 115px;
+  }
+  .combat-troops strong {
+    font-size: 21px;
+  }
+  .combat-rolls {
+    grid-column: 2;
+    grid-row: 3/5;
+    --die-size: 43px;
+    --dice-gap: 8px;
+    --dice-label: 40px;
+    align-self: center;
+  }
+  .combat-dice-row {
+    gap: 8px;
+  }
+  .combat-die {
+    padding: 7px;
+    gap: 4px;
+  }
+  .combat-comparisons {
+    height: 42px;
+    margin-left: 48px;
+  }
+  .combat-footer {
+    grid-column: 1/-1;
+    margin-top: 12px;
+  }
+  .combat-footer button {
+    min-height: 34px;
+    font-size: 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .combat-rolls.rolling .combat-die {
+    animation: none;
+  }
+  .combat-die {
+    transition: none;
+  }
+}
+
+@media (max-width: 600px) and (orientation: portrait) {
+  .combat-modal h2 {
+    margin: 10px 20px 14px;
+  }
+  .combat-troops {
+    margin-bottom: 14px;
+  }
+  .combat-comparisons {
+    height: 42px;
+  }
+  .combat-footer {
+    margin-top: 12px;
+  }
+}
+
+/* Keep the battle within the map, with the header and action row in view. */
+.modal-layer.combat-layer {
+  padding-top: calc(var(--combat-top, 0px) + 8px);
+  padding-bottom: calc(var(--combat-bottom, 0px) + 8px);
+}
+.modal.combat-modal {
+  max-height: calc(100dvh - var(--combat-top, 0px) - var(--combat-bottom, 0px) - 16px);
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+@media (max-width: 600px) and (orientation: portrait) {
+  .modal.combat-modal {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+  .combat-troops {
+    margin-bottom: 12px;
+  }
+  .combat-footer {
+    margin-top: 10px;
+  }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .modal-layer.combat-layer {
+    padding-top: calc(var(--combat-top, 0px) + 2px);
+    padding-bottom: calc(var(--combat-bottom, 0px) + 2px);
+  }
+  .modal.combat-modal {
+    padding: 8px 18px;
+    column-gap: 14px;
+    max-height: calc(100dvh - var(--combat-top, 0px) - var(--combat-bottom, 0px) - 4px);
+  }
+  .combat-modal h2 {
+    font-size: 19px;
+    margin: 4px 24px 8px;
+  }
+  .combat-troops {
+    gap: 4px;
+  }
+  .combat-troops > div {
+    padding: 3px 7px;
+  }
+  .combat-troops b {
+    font-size: 10px;
+  }
+  .combat-troops small,
+  .combat-troops strong small {
+    font-size: 8px;
+  }
+  .combat-troops strong {
+    font-size: 17px;
+  }
+  .combat-avatar {
+    width: 23px;
+    height: 23px;
+    font-size: 14px;
+  }
+  .combat-rolls {
+    --die-size: 35px;
+    --dice-gap: 8px;
+  }
+  .combat-die {
+    padding: 5px;
+    gap: 3px;
+    border-radius: 8px;
+  }
+  .combat-comparisons {
+    height: 30px;
+  }
+  .combat-comparisons > span {
+    font-size: 10px;
+  }
+  .combat-comparisons small {
+    font-size: 8px;
+  }
+  .combat-comparisons > span:before,
+  .combat-comparisons > span:after {
+    display: none;
+  }
+  .combat-footer {
+    margin-top: 8px;
+  }
+  .combat-footer button {
+    min-height: 30px;
+    font-size: 10px;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .modal.combat-modal {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .combat-modal h2 {
+    margin-top: 2px;
+    margin-bottom: 5px;
+  }
+  .combat-footer {
+    margin-top: 6px;
+  }
+  .combat-footer button {
+    min-height: 28px;
+  }
+}
+
+@media (max-height: 520px) and (orientation: portrait) {
+  .modal.combat-modal {
+    padding: 12px;
+  }
+  .combat-modal h2 {
+    font-size: 17px;
+    margin: 7px 22px 9px;
+  }
+  .combat-troops {
+    margin-bottom: 8px;
+  }
+  .combat-troops > div {
+    padding: 5px 7px;
+  }
+  .combat-troops strong {
+    font-size: 18px;
+  }
+  .combat-troops small,
+  .combat-troops strong small {
+    font-size: 7px;
+  }
+  .combat-rolls {
+    --die-size: 34px;
+    --dice-gap: 9px;
+  }
+  .combat-die {
+    padding: 5px;
+    gap: 3px;
+    border-radius: 8px;
+  }
+  .combat-comparisons {
+    height: 30px;
+  }
+  .combat-comparisons > span {
+    font-size: 10px;
+  }
+  .combat-comparisons small {
+    font-size: 8px;
+  }
+  .combat-comparisons > span:before,
+  .combat-comparisons > span:after {
+    display: none;
+  }
+  .combat-footer {
+    margin-top: 8px;
+  }
+  .combat-footer button {
+    min-height: 34px;
+    font-size: 10px;
+  }
+}
+
+.combat-modal.long-matchup h2 {
+  font-size: 20px;
+  margin: 8px 20px 14px;
+}
+.combat-modal.long-matchup .combat-troops {
+  margin-bottom: 16px;
+}
+.combat-modal.long-matchup .combat-comparisons {
+  height: 45px;
+}
+@media (max-width: 600px) and (orientation: portrait) {
+  .combat-modal.long-matchup h2 {
+    font-size: 17px;
+    margin: 6px 20px 10px;
+  }
+  .combat-modal.long-matchup .combat-troops {
+    margin-bottom: 8px;
+  }
+  .combat-modal.long-matchup .combat-comparisons {
+    height: 34px;
+  }
+  .combat-modal.long-matchup .combat-rolls {
+    --die-size: 40px;
+  }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .combat-modal.long-matchup h2 {
+    font-size: 17px;
+    margin: 2px 26px 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .combat-modal.long-matchup .combat-troops {
+    margin-bottom: 0;
+  }
+  .combat-modal.long-matchup .combat-comparisons {
+    height: 30px;
+  }
+}
+
+@media (max-height: 520px) and (orientation: portrait) {
+  .combat-modal.long-matchup h2 {
+    font-size: 16px;
+  }
+  .combat-modal.long-matchup .combat-rolls {
+    --die-size: 34px;
+  }
+  .combat-modal.long-matchup .combat-comparisons {
+    height: 30px;
+  }
+}
+
+.combat-troops > .combat-troop-tile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+}
+.combat-troop-identity {
+  min-width: 0;
+  flex: 1;
+}
+.combat-troop-identity b {
+  max-width: 100%;
+}
+.combat-troop-total {
+  margin-left: auto;
+  flex: none;
+}
+.combat-troop-count {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  white-space: nowrap;
+}
+.combat-troop-count strong {
+  margin: 0;
+}
+.combat-troop-history {
+  font: 500 16px var(--display);
+  color: #87968a;
+  white-space: nowrap;
+}
+.combat-troop-history i {
+  font-style: normal;
+  font-size: 13px;
+  margin-left: 3px;
+}
+@media (max-width: 600px) {
+  .combat-troops > .combat-troop-tile {
+    padding: 8px;
+    gap: 6px;
+  }
+  .combat-troop-count {
+    gap: 4px;
+  }
+  .combat-troop-count strong {
+    font-size: 20px;
+  }
+  .combat-troop-history {
+    font-size: 12px;
+  }
+  .combat-troop-history i {
+    font-size: 10px;
+    margin-left: 2px;
+  }
+}
+@media (max-width: 360px) {
+  .combat-troop-count strong {
+    font-size: 19px;
+  }
+  .combat-troop-history {
+    font-size: 11px;
+  }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .combat-troops {
+    grid-row: 3;
+  }
+  .combat-rolls {
+    grid-row: 3;
+    align-self: center;
+  }
+  .combat-troops > .combat-troop-tile {
+    padding: 6px 8px;
+    gap: 7px;
+  }
+  .combat-troop-count strong {
+    font-size: 19px;
+  }
+  .combat-troop-history {
+    font-size: 12px;
+  }
+  .combat-troop-identity b {
+    max-width: 100%;
+  }
+}
+@media (max-height: 520px) and (orientation: portrait) {
+  .combat-troops > .combat-troop-tile {
+    padding: 6px 7px;
+    gap: 5px;
+  }
+  .combat-troop-count strong {
+    font-size: 17px;
+  }
+  .combat-troop-history {
+    font-size: 10px;
+  }
+}

@@ -1,0 +1,146 @@
+/* Quiet contextual help; the phase stays on the map above the one-row dock. */
+.control-dock {
+  align-items: center;
+  min-height: 69px;
+}
+.control-dock .action-card {
+  flex-direction: row;
+  gap: 0;
+}
+.map-phase {
+  font: 500 11px var(--display);
+  letter-spacing: 0.5px;
+  min-height: 30px;
+  z-index: 3;
+}
+.map-phase .spinner {
+  width: 12px;
+  height: 12px;
+}
+.scoreboard-toggle {
+  gap: 8px;
+  padding: 0 7px;
+  min-width: 56px;
+}
+.stats-player-icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--player-light);
+  color: #263b2b;
+  border: 1px solid var(--player);
+  font-size: 15px;
+  line-height: 1;
+}
+.control-dock .cards-bar button {
+  position: relative;
+  gap: 6px;
+}
+.card-alert {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #e9bf66;
+  color: #263b2b;
+  border: 2px solid #203532;
+  font: bold 11px var(--font);
+  box-shadow: 0 1px 3px #162d2630;
+}
+.map-hint {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 6;
+  display: flex;
+  align-items: stretch;
+  max-width: calc(100% - 24px);
+  border: 1px solid #bdcebf;
+  border-radius: 10px;
+  background: #f7f9f0f5;
+  box-shadow: 0 3px 14px #172c3020;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+.map-hint button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  min-height: 36px;
+  background: transparent;
+  color: #365c42;
+  padding: 0;
+  border-radius: 9px;
+}
+.map-hint button svg {
+  width: 20px;
+  height: 20px;
+}
+.hint-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 5px 9px 12px;
+  max-width: 320px;
+  min-width: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #365541;
+  overflow-wrap: anywhere;
+}
+.hint-content .battle-result {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+@media (max-width: 760px) {
+  .control-dock {
+    min-height: 64px;
+  }
+  .map-phase {
+    font-size: 10px;
+  }
+  .map-hint {
+    right: 8px;
+    top: 8px;
+    max-width: calc(100% - 16px);
+  }
+}
+@media (max-width: 600px) {
+  .control-dock {
+    min-height: 61px;
+  }
+  .control-dock .action-card {
+    gap: 0;
+  }
+  .map-phase {
+    font-size: 9px;
+  }
+  .hint-content {
+    font-size: 10px;
+    max-width: 270px;
+  }
+  .scoreboard-toggle {
+    min-height: 36px;
+  }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .control-dock {
+    min-height: 52px;
+  }
+  .map-phase {
+    font-size: 9px;
+    min-height: 24px;
+    padding: 4px 8px;
+  }
+  .control-dock .action-card {
+    gap: 0;
+  }
+}

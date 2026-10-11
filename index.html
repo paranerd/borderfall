@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#182b2b" />
+    <meta
+      name="description"
+      content="Borderfall: ein rundenbasiertes Strategiespiel auf einer Weltkarte. Spiele gegen bis zu drei Computergegner."
+    />
+    <title>Borderfall · Dein Zug. Deine Welt.</title>
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Borderfall" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Borderfall – Spielmenü"
+          ><span class="brand-icon">B</span
+          ><span>BORDERFALL<small>DEIN ZUG. DEINE WELT.</small></span></a
+        >
+        <div class="header-map">
+          <span id="map-name">Weltkarte</span><span id="difficulty-label">Mittel</span>
+        </div>
+        <div class="header-actions">
+          <button
+            class="icon-button"
+            id="help-button"
+            aria-label="Spielregeln öffnen"
+            title="Spielregeln"
+          ></button
+          ><button
+            class="icon-button"
+            id="menu-button"
+            aria-label="Spielmenü öffnen"
+            title="Menü"
+          ></button>
+        </div>
+      </header>
+      <main class="workspace">
+        <section class="map-panel" aria-label="Weltkarte">
+          <h1 class="sr-only">Borderfall – Weltkarte</h1>
+          <div class="map-canvas" id="map-canvas">
+            <svg
+              id="world-map"
+              viewBox="0 0 1220 720"
+              role="group"
+              aria-label="42 Gebiete. Wähle ein Gebiet, um deinen Zug auszuführen."
+            ></svg>
+            <div
+              class="continent-bonuses"
+              id="continent-bonuses"
+              aria-label="Truppenboni bei vollständiger Kontrolle eines Kontinents"
+            ></div>
+            <button
+              id="zoom-reset"
+              class="zoom-reset"
+              aria-label="Kartenansicht zurücksetzen"
+              title="Kartenansicht zurücksetzen"
+              hidden
+            ></button>
+            <div class="scoreboard-widget" id="scoreboard-widget">
+              <section class="scoreboard" id="scoreboard" aria-label="Spielerübersicht"></section>
+              <button
+                id="scoreboard-toggle"
+                class="scoreboard-toggle"
+                data-action="stats"
+                aria-controls="scoreboard"
+                aria-expanded="true"
+                aria-label="Spielerübersicht ausblenden"
+              ></button>
+            </div>
+            <div class="map-tooltip" id="map-tooltip" hidden></div>
+            <div class="map-hint" id="map-hint">
+              <div class="hint-content" id="hint-content" hidden></div>
+              <button
+                id="hint-toggle"
+                data-action="hint"
+                aria-label="Spielhinweis anzeigen"
+                aria-controls="hint-content"
+                aria-expanded="false"
+              ></button>
+            </div>
+            <div class="map-phase" id="phase-label" role="status" aria-live="polite"></div>
+          </div>
+          <nav class="control-dock" aria-label="Spielaktionen">
+            <div class="cards-bar" id="cards-bar"></div>
+            <section class="action-card" id="action-card" aria-label="Aktuelle Aktion"></section>
+            <div class="turn-actions" id="turn-actions"></div>
+          </nav>
+        </section>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="modal-layer" class="modal-layer" hidden></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

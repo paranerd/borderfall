@@ -1,0 +1,387 @@
+/* The map keeps turn context; all actions fit on one horizontal row. */
+.workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  grid-template-columns: none;
+  padding-bottom: 12px;
+}
+.map-panel {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  padding-top: 87px;
+}
+.control-dock {
+  flex: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  background: #203532;
+  color: #f5f5ee;
+  border-top: 1px solid #39554b;
+  z-index: 5;
+  min-height: 69px;
+}
+.control-dock .cards-bar {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  justify-self: start;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  min-height: 0;
+  gap: 0;
+  width: auto;
+  border-radius: 0;
+}
+.control-dock .cards-bar button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #2d473e;
+  border: 1px solid #426054;
+  color: #c5dacd;
+  font-size: 11px;
+  padding: 0 12px;
+  height: 44px;
+  min-height: 44px;
+  border-radius: 8px;
+  width: auto;
+  margin: 0;
+  white-space: nowrap;
+}
+.control-dock .cards-bar svg {
+  width: 17px;
+  height: 17px;
+}
+.control-dock .action-card {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  gap: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  overflow: visible;
+  margin: 0;
+}
+.control-dock .action-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+.troop-stepper {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+}
+.troop-stepper button {
+  height: 44px;
+  width: 44px;
+  border-radius: 8px;
+  background: #3c5d4c;
+  border: 1px solid #63816b;
+  color: #eff5e7;
+  font-size: 24px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.stepper-count {
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.stepper-count output {
+  font: 600 26px var(--display);
+  line-height: 1;
+  color: #b2ddbc;
+}
+.control-dock .turn-actions {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  margin: 0;
+  gap: 0;
+  width: 178px;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  display: flex;
+  justify-content: center;
+}
+.control-dock .primary-button {
+  min-height: 44px;
+  font-size: 11px;
+  border-radius: 8px;
+  padding: 0 12px;
+  gap: 8px;
+  margin: 0;
+  flex: none;
+  white-space: nowrap;
+}
+.control-dock .turn-actions .primary-button {
+  width: 100%;
+  min-width: 0;
+}
+.control-dock .phase-button {
+  position: relative;
+  flex-direction: row;
+  justify-content: center;
+  padding-right: 30px;
+  line-height: 1;
+}
+.phase-button svg {
+  position: absolute;
+  right: 9px;
+  width: 16px;
+  height: 16px;
+}
+.phase-button.confirming {
+  background: #e4be73;
+  border-color: #e4be73;
+  color: #3b321c;
+}
+.button-short {
+  display: none;
+}
+.attack-buttons {
+  display: flex;
+  gap: 7px;
+  min-width: 0;
+}
+.action-controls > .primary-button,
+.attack-buttons .primary-button {
+  width: auto;
+  min-width: 0;
+}
+.action-controls .blitz-button {
+  background: #dce6d4;
+  border-color: #b7c8ad;
+  color: #4b6d48;
+}
+.battle-result {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+}
+.battle-dice {
+  gap: 3px;
+  margin: 0;
+}
+.dice {
+  height: 17px;
+  width: 17px;
+  font-size: 11px;
+}
+.battle-caption {
+  font-size: 8px !important;
+  color: #526e55;
+  white-space: nowrap;
+}
+.bot-line {
+  font-size: 11px;
+  color: #bdd0c1;
+  white-space: nowrap;
+}
+.zoom-reset {
+  bottom: 12px;
+  right: 12px;
+}
+.map-phase {
+  max-width: calc(100% - 28px);
+  bottom: 12px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.4;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px 10px;
+}
+.map-canvas:has(.zoom-reset:not([hidden])) .map-phase {
+  max-width: calc(100% - 100px);
+}
+.territory.move-preview .army-pill {
+  stroke: #284d3c;
+  stroke-width: 2.3;
+}
+@media (max-width: 760px) {
+  .workspace {
+    padding-bottom: 8px;
+  }
+  .map-panel {
+    padding-top: 76px;
+  }
+  .control-dock {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .control-dock .turn-actions {
+    width: 155px;
+  }
+  .control-dock .primary-button {
+    font-size: 10px;
+  }
+  .control-dock .cards-bar button {
+    font-size: 10px;
+  }
+  .map-phase {
+    font-size: 8px;
+  }
+}
+@media (max-width: 600px) {
+  .control-dock {
+    gap: 5px;
+    padding: 9px 8px;
+    min-height: 61px;
+  }
+  .control-dock .cards-bar button {
+    padding: 0 8px;
+    height: 42px;
+    min-height: 42px;
+    gap: 4px;
+    font-size: 10px;
+  }
+  .control-dock .cards-bar svg {
+    height: 15px;
+    width: 15px;
+  }
+  .card-label {
+    display: none;
+  }
+  .control-dock .turn-actions {
+    width: 100%;
+    min-height: 42px;
+  }
+  .control-dock .primary-button {
+    min-height: 42px;
+    font-size: 9px;
+    padding: 0 8px;
+    gap: 4px;
+  }
+  .button-full {
+    display: none;
+  }
+  .button-short {
+    display: inline;
+  }
+  .control-dock .phase-button {
+    padding: 0 4px;
+  }
+  .phase-button svg {
+    display: none;
+  }
+  .troop-stepper {
+    gap: 4px;
+  }
+  .troop-stepper button {
+    width: 36px;
+    height: 42px;
+    font-size: 22px;
+  }
+  .stepper-count {
+    width: 36px;
+  }
+  .stepper-count output {
+    font-size: 23px;
+  }
+  .control-dock .action-controls {
+    gap: 5px;
+  }
+  .control-dock .move-button {
+    width: 36px;
+    padding: 0;
+  }
+  .control-dock .move-button svg {
+    width: 17px;
+    height: 17px;
+  }
+  .attack-buttons {
+    gap: 5px;
+  }
+  .attack-buttons .primary-button {
+    min-width: 48px;
+    padding: 0 8px;
+  }
+  .attack-buttons svg {
+    width: 13px;
+    height: 13px;
+  }
+  .map-phase {
+    font-size: 8px;
+    padding: 6px 9px;
+  }
+  .bot-line {
+    font-size: 9px;
+  }
+}
+@media (max-height: 700px) and (max-width: 760px) {
+  .map-panel {
+    padding-top: 71px;
+  }
+  .map-phase {
+    font-size: 7px;
+  }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .workspace {
+    padding-bottom: 6px;
+  }
+  .map-panel {
+    padding-top: 64px;
+  }
+  .control-dock {
+    padding: 7px 12px;
+    min-height: 52px;
+  }
+  .control-dock .primary-button,
+  .control-dock .cards-bar button {
+    height: 36px;
+    min-height: 36px;
+    font-size: 9px;
+  }
+  .control-dock .turn-actions {
+    min-height: 36px;
+    width: 145px;
+  }
+  .troop-stepper button {
+    height: 36px;
+    width: 36px;
+    font-size: 22px;
+  }
+  .stepper-count {
+    width: 42px;
+  }
+  .stepper-count output {
+    font-size: 23px;
+  }
+  .map-phase {
+    font-size: 7px;
+    padding: 4px 8px;
+    bottom: 8px;
+  }
+  .zoom-reset {
+    bottom: 8px;
+    right: 8px;
+  }
+}

@@ -1,0 +1,172 @@
+/* The current phase sits above a single row of actions. */
+.map-panel {
+  padding-top: 62px;
+}
+.control-dock {
+  align-items: end;
+  min-height: 90px;
+}
+.control-dock .action-card {
+  flex-direction: column;
+  gap: 7px;
+}
+
+.control-dock .check-button {
+  width: 44px;
+  padding: 0;
+  flex: none;
+  background: #92d4bb;
+  color: #183b2f;
+  border-color: #a9e0c7;
+}
+.check-button svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.2;
+}
+.troop-stepper .max-button {
+  font-size: 10px;
+  font-weight: 650;
+  color: #c6e2cc;
+}
+.toast {
+  top: 76px;
+  bottom: auto;
+  max-width: min(480px, calc(100vw - 32px));
+  padding: 10px 16px;
+  font-size: 11px;
+}
+.name-field {
+  grid-column: 1/-1;
+}
+.name-input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  border: 1px solid #bacaad;
+  border-radius: 8px;
+  padding: 0 12px;
+  background: #fcfcf5;
+  color: #284637;
+  font: 500 14px var(--font);
+  outline: none;
+}
+.name-input:focus {
+  border-color: #528267;
+  box-shadow: 0 0 0 3px #84bba630;
+}
+.name-input::placeholder {
+  color: #82937c;
+}
+.player-name-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .map-panel {
+    padding-top: 53px;
+  }
+  .control-dock {
+    min-height: 84px;
+  }
+  .name-input {
+    height: 38px;
+    font-size: 13px;
+  }
+  .toast {
+    font-size: 10px;
+  }
+}
+@media (max-width: 600px) {
+  .control-dock {
+    min-height: 79px;
+  }
+  .control-dock .action-card {
+    gap: 6px;
+  }
+  .control-dock .check-button {
+    width: 36px;
+  }
+  .check-button svg {
+    width: 18px;
+    height: 18px;
+  }
+  .troop-stepper .max-button {
+    font-size: 9px;
+  }
+  .name-input {
+    height: 36px;
+  }
+}
+@media (max-height: 700px) and (max-width: 760px) {
+  .map-panel {
+    padding-top: 49px;
+  }
+}
+@media (max-width: 360px) {
+  .control-dock .action-controls {
+    gap: 4px;
+  }
+  .troop-stepper {
+    gap: 3px;
+  }
+  .troop-stepper button,
+  .control-dock .check-button {
+    width: 30px;
+  }
+  .stepper-count {
+    width: 36px;
+  }
+  .stepper-count output {
+    font-size: max(13px, calc(27px - var(--digits) * 3px));
+  }
+  .troop-stepper .max-button {
+    font-size: 8px;
+  }
+  .control-dock .primary-button {
+    font-size: 8px;
+  }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .map-panel {
+    padding-top: 43px;
+  }
+  .control-dock {
+    min-height: 70px;
+  }
+  .control-dock .action-card {
+    gap: 5px;
+  }
+  .control-dock .check-button {
+    width: 36px;
+  }
+  .setup-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .name-field {
+    grid-column: auto;
+  }
+  .name-input {
+    height: 30px;
+    font-size: 12px;
+  }
+  .toast {
+    padding: 7px 12px;
+    font-size: 10px;
+  }
+}
+@media (max-width: 360px) and (max-height: 700px) {
+  .modal:has(.name-field) {
+    padding: 17px;
+  }
+  .modal:has(.name-field) .modal-intro {
+    margin-bottom: 8px;
+  }
+  .modal:has(.name-field) .setup-options {
+    margin: 10px 0;
+  }
+}

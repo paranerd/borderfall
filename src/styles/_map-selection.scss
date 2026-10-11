@@ -1,0 +1,104 @@
+/* Choose the battlefield without leaving the compact setup. */
+.map-selection {
+  margin: 17px 0 0;
+}
+.map-selection .field-label {
+  margin-bottom: 7px;
+}
+.map-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.map-choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  padding: 9px;
+  border: 1px solid #cbd5c2;
+  border-radius: 9px;
+  background: #eaf0e2;
+  color: #52694d;
+  min-width: 0;
+}
+.map-choice.chosen {
+  border-color: #426c50;
+  background: #e0ecdc;
+  box-shadow: inset 0 0 0 1px #426c50;
+}
+.map-choice svg {
+  width: 76px;
+  height: 50px;
+  flex: none;
+  background: #f1f4ea;
+  border-radius: 5px;
+}
+.map-choice-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 4px;
+}
+.map-choice strong {
+  font: 500 15px var(--display);
+  color: #294b35;
+}
+.map-choice small {
+  font-size: 9px;
+  white-space: nowrap;
+}
+.map-choice-info > span {
+  font-size: 9px;
+  line-height: 1.4;
+}
+@media (max-width: 600px) {
+  .map-selection {
+    margin-top: 11px;
+  }
+  .map-choice {
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px;
+    text-align: center;
+  }
+  .map-choice svg {
+    height: 33px;
+    width: 72px;
+  }
+  .map-choice-info {
+    gap: 3px;
+  }
+  .map-choice strong {
+    font-size: 12px;
+  }
+  .map-choice small {
+    font-size: 8px;
+  }
+  .map-choice-info > span {
+    display: none;
+  }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+}
+
+@media (min-width: 601px) and (min-height: 501px) {
+  .map-canvas[data-map='europe']:has(.scoreboard-widget:not(.collapsed)) #world-map {
+    margin-left: 284px;
+    width: calc(100% - 284px);
+  }
+}
+@media (min-width: 601px) and (max-width: 760px) and (min-height: 501px) {
+  .map-canvas[data-map='europe']:has(.scoreboard-widget:not(.collapsed)) #world-map {
+    margin-left: 244px;
+    width: calc(100% - 244px);
+  }
+}
+@media (max-width: 360px) and (orientation: portrait) {
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .map-choice .map-region-count {
+    display: none;
+  }
+}

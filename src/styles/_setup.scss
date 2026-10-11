@@ -1,0 +1,198 @@
+/* Three compact setup steps share the same dialog and preserve draft choices. */
+.modal.setup-wizard {
+  width: 560px;
+  padding: 28px;
+}
+.setup-wizard h2 {
+  font-size: 32px;
+  letter-spacing: -1.3px;
+  margin: 12px 24px 20px 0;
+}
+.setup-steps {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 22px;
+  padding: 0;
+}
+.setup-steps li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  color: #87917e;
+  flex: 1;
+  white-space: nowrap;
+}
+.setup-steps li > span {
+  display: grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  border: 1px solid #c8d4bd;
+  border-radius: 50%;
+  flex: none;
+  font: 500 11px var(--display);
+}
+.setup-steps .current {
+  color: #31583f;
+  font-weight: 700;
+}
+.setup-steps .current > span {
+  background: #31583f;
+  color: #eff6e6;
+  border-color: #31583f;
+}
+.setup-steps .done {
+  color: #426c50;
+}
+.setup-step-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 17px;
+  min-height: 156px;
+}
+.setup-wizard .setup-footer {
+  margin-top: 22px;
+}
+.setup-wizard .name-input {
+  height: 45px;
+  font-size: 18px;
+}
+.setup-wizard .map-selection {
+  margin: 0;
+}
+.setup-wizard .map-selection > .field-label {
+  display: none;
+}
+.setup-wizard .map-choice {
+  flex-direction: column;
+  align-items: stretch;
+  text-align: center;
+  padding: 10px;
+  gap: 8px;
+}
+.setup-wizard .map-choice svg {
+  width: 100%;
+  height: 92px;
+}
+.setup-wizard .map-choice-info {
+  align-items: center;
+}
+.setup-wizard .map-choice-info > span {
+  display: block;
+  font-size: 10px;
+  min-height: 28px;
+}
+.setup-wizard .setup-grid {
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin: 0;
+}
+.setup-summary {
+  font-size: 11px;
+  color: #6b7e60;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .modal.setup-wizard {
+    padding: 20px;
+  }
+  .setup-wizard h2 {
+    font-size: 27px;
+    margin: 10px 24px 18px 0;
+  }
+  .setup-steps {
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .setup-steps li {
+    gap: 5px;
+    font-size: 9px;
+  }
+  .setup-steps li > span {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+  .setup-step-content {
+    min-height: 145px;
+    gap: 14px;
+  }
+  .setup-wizard .map-choice svg {
+    height: 62px;
+  }
+  .setup-wizard .map-choice-info > span {
+    font-size: 9px;
+    min-height: 24px;
+  }
+  .setup-wizard .map-choice small {
+    font-size: 8px;
+  }
+  .setup-wizard .setup-footer {
+    margin-top: 18px;
+  }
+  .setup-wizard .setup-footer button {
+    min-height: 42px;
+  }
+  .setup-wizard .name-input {
+    font-size: 16px;
+    height: 42px;
+  }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .modal.setup-wizard {
+    width: 700px;
+    padding: 16px 20px;
+  }
+  .setup-wizard h2 {
+    font-size: 24px;
+    margin: 8px 25px 12px 0;
+  }
+  .setup-steps {
+    margin-bottom: 12px;
+  }
+  .setup-steps li > span {
+    width: 20px;
+    height: 20px;
+  }
+  .setup-step-content {
+    min-height: 90px;
+    gap: 10px;
+  }
+  .setup-wizard .setup-footer {
+    margin-top: 14px;
+  }
+  .setup-wizard .setup-footer button {
+    min-height: 34px;
+  }
+  .setup-wizard .setup-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .setup-wizard .map-choice {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    padding: 8px;
+    gap: 10px;
+  }
+  .setup-wizard .map-choice svg {
+    width: 80px;
+    height: 48px;
+  }
+  .setup-wizard .map-choice-info {
+    align-items: flex-start;
+  }
+  .setup-wizard .map-choice-info > span {
+    font-size: 9px;
+    min-height: 0;
+  }
+  .setup-wizard .name-input {
+    height: 36px;
+    font-size: 16px;
+  }
+}

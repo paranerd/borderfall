@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  /><title>Borderfall · Testzustände</title
+  ><style>
+    body {
+      font: 16px system-ui;
+      padding: 20px;
+      max-width: 600px;
+      background: #f4f4ed;
+      color: #213a2a;
+    }
+    button {
+      display: block;
+      padding: 12px;
+      margin: 10px 0;
+      width: 100%;
+      font: inherit;
+    }
+    p {
+      line-height: 1.5;
+    }
+  </style>
+  <h1>Testzustände</h1>
+  <p>Diese Zustände überschreiben ausschließlich den lokalen Spielstand dieser Browseradresse.</p>
+  <button data-scenario="reinforce">Verstärkung</button
+  ><button data-scenario="bulk">Sieben Verstärkungen</button
+  ><button data-scenario="attack">Angriff</button
+  ><button data-scenario="chain">Angriffskette</button
+  ><button data-scenario="pending">Eroberung mit Nachziehen</button
+  ><button data-scenario="fortify">Truppen verschieben</button
+  ><button data-scenario="cards">Acht Gebietskarten</button
+  ><button data-scenario="victory">Sieg</button
+  ><button data-scenario="defeat">Niederlage</button
+  ><button data-scenario="europe-no-movement">Europa Eroberung ohne Nachziehen (4 gegen 1)</button
+  ><button data-scenario="europe-legacy-empty">Europa alter Spielstand ohne Nachziehtruppen</button
+  ><button data-scenario="europe-long-names">Europa lange Gebietsnamen</button
+  ><button data-scenario="europe-last-die">Europa letzter Angriffswürfel (2 gegen 8)</button
+  ><button data-scenario="europe-manual">Europa manueller Angriff (5 gegen 3)</button
+  ><button data-scenario="europe-pending">Europa Nachziehen</button
+  ><button data-scenario="europe-victory">Europa Sieg</button
+  ><button data-scenario="computer">Computerzüge normal</button>
+  <script type="module">
+    import { newGame, attack, startTurn, SAVE_KEY } from '../src/game/engine.ts';
+    import { TERRITORIES, getMap } from '../src/game/maps/index.ts';
+    let seed = 88;
+    const rng = () => {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      return seed / 4294967296;
+    };
+    document.addEventListener('click', (e) => {
+      const scenario = e.target.dataset.scenario;
+      if (!scenario) return;
+      const g = newGame(
+        { opponents: 3, fast: true, mapId: scenario.startsWith('europe-') ? 'europe' : 'world' },
+        rng,
+      );
+      if (scenario.startsWith('europe-')) {
+        g.phase = 'attack';
+        g.reserve = 0;
+        if (scenario === 'europe-no-movement' || scenario === 'europe-legacy-empty') {
+          g.board.germany = { owner: 0, armies: 4 };
+          g.board.poland = { owner: 1, armies: 1 };
+          if (scenario === 'europe-legacy-empty') {
+            let i = 0;
+            attack(g, 'germany', 'poland', () => (i++ < 3 ? 0.99 : 0));
+            g.pending = { from: 'germany', to: 'poland', max: 0 };
+          }
+        } else if (scenario === 'europe-long-names') {
+          g.board.germany = { owner: 0, armies: 5 };
+          g.board['czech-slovak'] = { owner: 1, armies: 3 };
+        } else if (scenario === 'europe-last-die') {
+          g.board.germany = { owner: 0, armies: 2 };
+          g.board.poland = { owner: 1, armies: 8 };
+        } else if (scenario === 'europe-manual') {
+          g.board.germany = { owner: 0, armies: 5 };
+          g.board.poland = { owner: 1, armies: 3 };
+        } else if (scenario === 'europe-pending') {
+          g.board.france = { owner: 0, armies: 18 };
+          g.board.benelux = { owner: 1, armies: 1 };
+          let i = 0;
+          attack(g, 'france', 'benelux', () => (i++ < 3 ? 0.99 : 0));
+        } else {
+          for (const t of getMap(g).territories) g.board[t.id] = { owner: 0, armies: 1 };
+          g.board.portugal = { owner: 1, armies: 1 };
+          g.board.spain.armies = 100;
+          g.players[2].alive = false;
+          g.players[3].alive = false;
+        }
+        g.players.forEach((player) => {
+          player.alive = getMap(g).territories.some((t) => g.board[t.id].owner === player.id);
+        });
+        localStorage.setItem(SAVE_KEY, JSON.stringify(g));
+        localStorage.setItem('weltmacht.introduced', 'true');
+        location.href = '/';
+        return;
+      }
+      g.board.alaska = { owner: 0, armies: 12 };
+      g.board.alberta = { owner: 1, armies: 1 };
+      g.board.nwt = { owner: 0, armies: 2 };
+      g.board.ontario = { owner: 0, armies: 2 };
+      if (scenario === 'computer') {
+        g.turn = 1;
+        g.settings.fast = false;
+        startTurn(g);
+      }
+      if (scenario === 'bulk') {
+        g.reserve = 7;
+      }
+      if (scenario === 'attack' || scenario === 'pending' || scenario === 'chain') {
+        g.phase = 'attack';
+        g.reserve = 0;
+      }
+      if (scenario === 'chain') {
+        g.board.alaska.armies = 50;
+        g.board.wus = { owner: 1, armies: 1 };
+        g.board.central = { owner: 1, armies: 1 };
+      }
+      if (scenario === 'pending') {
+        let i = 0;
+        attack(g, 'alaska', 'alberta', () => (i++ < 3 ? 0.99 : 0));
+      }
+      if (scenario === 'fortify') {
+        g.phase = 'fortify';
+        g.reserve = 0;
+      }
+      if (scenario === 'cards') {
+        g.players[0].cards = g.deck.splice(0, 8);
+      }
+      if (scenario === 'victory') {
+        for (const t of TERRITORIES) g.board[t.id].owner = 0;
+        g.board.alberta = { owner: 1, armies: 1 };
+        g.players[2].alive = false;
+        g.players[3].alive = false;
+        g.phase = 'attack';
+        g.pending = null;
+        g.reserve = 0;
+      }
+      if (scenario === 'defeat') {
+        for (const t of TERRITORIES) g.board[t.id] = { owner: 1, armies: 2 };
+        g.board.alberta = { owner: 0, armies: 1 };
+        g.board.china = { owner: 2, armies: 10 };
+        g.board.alaska.armies = 100;
+        g.players[3].alive = false;
+        g.turn = 1;
+        g.phase = 'attack';
+        g.reserve = 0;
+      }
+      g.players.forEach((player) => {
+        player.alive = getMap(g).territories.some((t) => g.board[t.id].owner === player.id);
+      });
+      localStorage.setItem(SAVE_KEY, JSON.stringify(g));
+      localStorage.setItem('weltmacht.introduced', 'true');
+      location.href = '/';
+    });
+  </script>
+</html>
