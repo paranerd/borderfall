@@ -1,4 +1,4 @@
-import { $, escape, icon, difficultyName } from './dom';
+import { $, escape, icon } from './dom';
 import { canAttack, findSet } from '../game/engine';
 import { getMap } from '../game/maps';
 import type { GameState, BattleResult } from '../game/types';
@@ -86,13 +86,16 @@ export function renderActions(state: ActionState, updateHintContext: (context: s
       desc = selected
         ? 'Mit + setzen, mit − zurücknehmen.'
         : 'Wähle ein eigenes Gebiet auf der Karte.';
-      controls = stepper(
-        g.reserve,
-        'verfügbar',
-        !selected || !((g.placements?.[selected] ?? 0) > 0),
-        !selected || g.reserve === 0,
-        g.reserve,
-      );
+      controls =
+        g.reserve > 0
+          ? stepper(
+              g.reserve,
+              'verfügbar',
+              !selected || !((g.placements?.[selected] ?? 0) > 0),
+              !selected || g.reserve === 0,
+              g.reserve,
+            )
+          : '';
       if (g.players[0].cards.length >= 5)
         action =
           '<button class="primary-button" data-action="cards" aria-label="Kartenset tauschen"><span class="button-full">Kartenset tauschen ↗</span><span class="button-short" aria-hidden="true">Tauschen</span></button>';
@@ -114,7 +117,9 @@ export function renderActions(state: ActionState, updateHintContext: (context: s
           : 'Wähle einen markierten Gegner.'
         : 'Wähle ein eigenes Gebiet mit mindestens 2 Truppen.';
       const ready = !!target && canAttack(g, selected, target);
-      controls = `<div class="attack-buttons"><button class="primary-button" data-action="attack" ${ready ? '' : 'disabled'} aria-label="Angreifen" title="Manueller Angriff mit sichtbaren Würfeln"><span class="button-full">Angreifen</span><span class="button-short" aria-hidden="true">Wurf</span>${icon('attack')}</button><button class="primary-button blitz-button" data-action="blitz" ${ready ? '' : 'disabled'} title="Kämpft bis zur Eroberung oder bis nur eine eigene Truppe bleibt" aria-label="Blitzangriff"><span class="button-full">Blitzangriff</span><span class="button-short" aria-hidden="true">Blitz</span>${icon('blitz')}</button></div>`;
+      controls = ready
+        ? `<div class="attack-buttons"><button class="primary-button" data-action="attack" aria-label="Angreifen" title="Manueller Angriff mit sichtbaren Würfeln"><span class="button-full">Angreifen</span><span class="button-short" aria-hidden="true">Wurf</span>${icon('attack')}</button><button class="primary-button blitz-button" data-action="blitz" title="Kämpft bis zur Eroberung oder bis nur eine eigene Truppe bleibt" aria-label="Blitzangriff"><span class="button-full">Blitzangriff</span><span class="button-short" aria-hidden="true">Blitz</span>${icon('blitz')}</button></div>`
+        : '';
       action = phaseButton('next', 'Zum Verschieben', 'Weiter ohne Angriff?');
     } else {
       title = g.fortified
@@ -131,7 +136,7 @@ export function renderActions(state: ActionState, updateHintContext: (context: s
             ? `Vorschau: ${quantity} Truppen verschieben. Eine bleibt zurück.`
             : 'Wähle ein verbundenes eigenes Zielgebiet.'
           : 'Wähle ein eigenes Gebiet mit mindestens 2 Truppen.';
-      if (!g.fortified) {
+      if (!g.fortified && selected && target) {
         controls = stepper(
           selected ? quantity : 0,
           'verschieben',
@@ -156,6 +161,7 @@ export function renderActions(state: ActionState, updateHintContext: (context: s
           finished: 'Partie beendet',
         }[phase];
     $('#action-card').innerHTML = `<div class="action-controls">${controls}</div>`;
+    $('#action-card').hidden = !controls;
     $('#phase-label').innerHTML =
       !human && g.winner === null
         ? `<i class="spinner" aria-hidden="true"></i><span>${escape(g.players[g.turn].name)} ist am Zug</span>`
@@ -164,7 +170,7 @@ export function renderActions(state: ActionState, updateHintContext: (context: s
     $('#cards-bar').innerHTML =
       `<button data-action="cards" aria-label="${g.players[0].cards.length} Gebietskarten ${canTrade ? 'tauschen' : 'ansehen'}" title="Gebietskarten ${canTrade ? 'tauschen' : 'ansehen'}">${icon('cards')}<span class="card-count">${g.players[0].cards.length}</span>${canTrade ? '<span class="card-alert" aria-hidden="true">!</span>' : ''}</button>`;
     $('#turn-actions').innerHTML = action;
-    $('#difficulty-label').textContent = difficultyName(g.settings.difficulty);
+    $('#turn-actions').hidden = !action;
     const hints =
       !human || g.winner !== null
         ? `${title} ${desc}`

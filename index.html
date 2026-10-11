@@ -16,33 +16,24 @@
   </head>
   <body>
     <div class="app">
-      <header class="topbar">
-        <a class="brand" href="#" aria-label="Borderfall – Spielmenü"
-          ><span class="brand-icon">B</span
-          ><span>BORDERFALL<small>DEIN ZUG. DEINE WELT.</small></span></a
-        >
-        <div class="header-map">
-          <span id="map-name">Weltkarte</span><span id="difficulty-label">Mittel</span>
-        </div>
-        <div class="header-actions">
-          <button
-            class="icon-button"
-            id="help-button"
-            aria-label="Spielregeln öffnen"
-            title="Spielregeln"
-          ></button
-          ><button
-            class="icon-button"
-            id="menu-button"
-            aria-label="Spielmenü öffnen"
-            title="Menü"
-          ></button>
-        </div>
-      </header>
       <main class="workspace">
         <section class="map-panel" aria-label="Weltkarte">
           <h1 class="sr-only">Borderfall – Weltkarte</h1>
           <div class="map-canvas" id="map-canvas">
+            <nav class="map-menu" aria-label="Spielmenü und Handbuch">
+              <button
+                class="icon-button"
+                id="menu-button"
+                aria-label="Spielmenü öffnen"
+                title="Menü"
+              ></button>
+              <button
+                class="icon-button"
+                id="help-button"
+                aria-label="Spielregeln öffnen"
+                title="Spielregeln"
+              ></button>
+            </nav>
             <svg
               id="world-map"
               viewBox="0 0 1220 720"
@@ -63,14 +54,6 @@
             ></button>
             <div class="scoreboard-widget" id="scoreboard-widget">
               <section class="scoreboard" id="scoreboard" aria-label="Spielerübersicht"></section>
-              <button
-                id="scoreboard-toggle"
-                class="scoreboard-toggle"
-                data-action="stats"
-                aria-controls="scoreboard"
-                aria-expanded="true"
-                aria-label="Spielerübersicht ausblenden"
-              ></button>
             </div>
             <div class="map-tooltip" id="map-tooltip" hidden></div>
             <div class="map-hint" id="map-hint">
@@ -83,13 +66,19 @@
                 aria-expanded="false"
               ></button>
             </div>
-            <div class="map-phase" id="phase-label" role="status" aria-live="polite"></div>
-          </div>
-          <nav class="control-dock" aria-label="Spielaktionen">
             <div class="cards-bar" id="cards-bar"></div>
-            <section class="action-card" id="action-card" aria-label="Aktuelle Aktion"></section>
-            <div class="turn-actions" id="turn-actions"></div>
-          </nav>
+            <nav class="floating-actions" aria-label="Spielaktionen">
+              <div class="map-phase" id="phase-label" role="status" aria-live="polite"></div>
+              <div class="floating-controls">
+                <section
+                  class="action-card"
+                  id="action-card"
+                  aria-label="Aktuelle Aktion"
+                ></section>
+                <div class="turn-actions" id="turn-actions"></div>
+              </div>
+            </nav>
+          </div>
         </section>
       </main>
     </div>

@@ -152,7 +152,7 @@ export async function startApplication(platform: Platform) {
   }
   function render() {
     const focusedAction = document.activeElement?.closest<HTMLElement>(
-      '.control-dock [data-action]',
+      '.floating-actions [data-action]',
     )?.dataset.action;
     renderScoreboard();
     updateMap();
@@ -161,13 +161,10 @@ export async function startApplication(platform: Platform) {
     save();
     if (focusedAction) {
       const button = document.querySelector<HTMLButtonElement>(
-        `.control-dock [data-action="${focusedAction}"]`,
+        `.floating-actions [data-action="${focusedAction}"]`,
       );
       if (button && !button.disabled) button.focus();
-      else
-        document
-          .querySelector<HTMLElement>('.control-dock .action-controls button:not(:disabled)')
-          ?.focus();
+      else document.querySelector<HTMLElement>('.floating-actions button:not(:disabled)')?.focus();
     }
   }
 
@@ -241,7 +238,7 @@ export async function startApplication(platform: Platform) {
       return;
     }
     if (action === 'stats') {
-      statsPreference = $('#scoreboard-toggle').getAttribute('aria-expanded') === 'true';
+      statsPreference = !$('#scoreboard-widget').classList.contains('collapsed');
       savePreference('weltmacht.statsCollapsed', String(statsPreference));
       updateScoreboardVisibility();
       positionBonuses();
@@ -361,7 +358,11 @@ export async function startApplication(platform: Platform) {
     } else if (action === 'fortify' && selected && target) {
       if (fortify(g, selected, target, quantity)) {
         toast(`${quantity} Truppen verschoben.`);
+        endTurn(g);
         resetSelection();
+        render();
+        scheduleBot();
+        return;
       }
     } else if (action === 'end') {
       if (endTurn(g)) {
@@ -582,7 +583,7 @@ export async function startApplication(platform: Platform) {
         'setup-wizard',
       );
     } else if (modal === 'menu') {
-      content = `<span class="eyebrow">KOMMANDOZENTRALE</span><h2>Eine kurze Verschnaufpause.</h2><p class="modal-intro">Runde ${g.round} · ${territoriesOf(g, 0).length} deiner ${TERRITORIES.length} Gebiete.</p><div class="menu-stack"><button class="secondary-button" data-modal="help">Spielregeln & Bedienung</button><button class="secondary-button" data-modal="speed">Computerzüge: ${g.settings.fast ? 'Schnell' : 'Normal'}</button><button class="secondary-button" data-modal="sound">Sound: ${sound ? 'Ein' : 'Aus'}</button><button class="secondary-button" data-modal="setup">Neue Partie einrichten</button></div>`;
+      content = `<span class="eyebrow">KOMMANDOZENTRALE</span><h2>Eine kurze Verschnaufpause.</h2><p class="setup-summary">${activeMap.name} · ${difficultyName(g.settings.difficulty)}</p><p class="modal-intro">Runde ${g.round} · ${territoriesOf(g, 0).length} deiner ${TERRITORIES.length} Gebiete.</p><div class="menu-stack"><button class="secondary-button" data-modal="help">Spielregeln & Bedienung</button><button class="secondary-button" data-modal="speed">Computerzüge: ${g.settings.fast ? 'Schnell' : 'Normal'}</button><button class="secondary-button" data-modal="sound">Sound: ${sound ? 'Ein' : 'Aus'}</button><button class="secondary-button" data-modal="setup">Neue Partie einrichten</button></div>`;
       $('#modal-layer').innerHTML = modalWrapper(content, 'Spielmenü');
     } else if (modal === 'help') {
       const h = HELP[helpPage];
@@ -754,10 +755,6 @@ export async function startApplication(platform: Platform) {
     if (el && !el.disabled && isAction(el.dataset.action)) void handleAction(el.dataset.action);
   });
   $('#menu-button').addEventListener('click', () => openModal(started ? 'menu' : 'setup'));
-  $('.brand').addEventListener('click', (event) => {
-    event.preventDefault();
-    openModal(started ? 'menu' : 'setup');
-  });
   function openHelp() {
     helpPage = 0;
     openModal('help');
@@ -855,6 +852,7 @@ export async function startApplication(platform: Platform) {
     updateScoreboardVisibility();
     positionBonuses();
   }).observe($('#map-canvas'));
+  new ResizeObserver(positionBonuses).observe($('#scoreboard-widget'));
   let pausedAnimations: Animation[] = [];
   platform.lifecycle.subscribe((active) => {
     collapseHint();

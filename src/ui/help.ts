@@ -29,7 +29,7 @@ export const HELP = [
     title: 'Sichere deine nächste Runde.',
     text: 'Einmal pro Zug kannst du Truppen zwischen zwei eigenen Gebieten verschieben. Zwischen ihnen muss ein durchgängiger Weg durch eigene Gebiete bestehen.',
     text2:
-      'Wähle das Ausgangsgebiet: Ein erneuter Klick darauf löst die Auswahl auf. Passe die Anzahl mit − / + an und wähle ein verbundenes Ziel. Die Karte zeigt die Truppenbewegung sofort als Vorschau; mit dem Haken führst du sie aus. Eine Truppe bleibt zurück. Solange du nichts verschoben hast, bestätigst du das Zugende im Button. Nach einer Verschiebung genügt ein Klick.',
+      'Wähle das Ausgangsgebiet: Ein erneuter Klick darauf löst die Auswahl auf. Wähle ein verbundenes Ziel und passe die Anzahl mit − / + an. Die Karte zeigt die Truppenbewegung sofort als Vorschau; mit dem Haken führst du sie aus. Eine Truppe bleibt zurück. Danach ist automatisch der nächste Spieler am Zug. Solange du nichts verschoben hast, bestätigst du das Zugende im Button.',
     example: '<b>≥ 1</b> Truppe bleibt immer in jedem Gebiet zurück',
   },
   {

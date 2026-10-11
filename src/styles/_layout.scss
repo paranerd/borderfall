@@ -1,70 +1,243 @@
-// The map and dock backgrounds reach the screen edges. Insets protect controls.
+/* The map fills the screen; only the controls respect safe-area insets. */
 .app {
-  --header-height: 54px;
-  --dock-horizontal-padding: 18px;
-  --dock-vertical-padding: 12px;
-  --map-control-inset: 12px;
+  --screen-left: max(12px, env(safe-area-inset-left));
+  --screen-right: max(12px, env(safe-area-inset-right));
+  --screen-top: max(12px, env(safe-area-inset-top));
+  --screen-bottom: max(12px, env(safe-area-inset-bottom));
   max-width: none;
   margin: 0;
   padding: 0;
 }
-
-.topbar {
-  height: calc(var(--header-height) + env(safe-area-inset-top));
-  padding: env(safe-area-inset-top) max(12px, env(safe-area-inset-right)) 0
-    max(12px, env(safe-area-inset-left));
-}
-
 .workspace {
+  display: flex;
   padding: 0;
+  gap: 0;
 }
-
-.map-panel,
-.control-dock {
+.map-panel {
+  flex: 1;
+  width: 100%;
+  padding: 0;
   border: 0;
   border-radius: 0;
 }
-
-.control-dock {
-  padding-left: max(var(--dock-horizontal-padding), env(safe-area-inset-left));
-  padding-right: max(var(--dock-horizontal-padding), env(safe-area-inset-right));
-  padding-bottom: calc(var(--dock-vertical-padding) + env(safe-area-inset-bottom));
+.map-canvas {
+  width: 100%;
+  height: 100%;
 }
-
-.scoreboard-widget {
-  left: max(var(--map-control-inset), env(safe-area-inset-left));
+.map-canvas #world-map {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
 }
-
-.map-hint,
+.map-menu {
+  position: absolute;
+  top: var(--screen-top);
+  left: var(--screen-left);
+  z-index: 7;
+  display: flex;
+  gap: 8px;
+}
+.map-menu .icon-button,
+.cards-bar button,
 .zoom-reset {
-  right: max(var(--map-control-inset), env(safe-area-inset-right));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid #bdcebf;
+  border-radius: 12px;
+  background: #f7f9f0f5;
+  color: #365c42;
+  box-shadow: 0 3px 14px #172c3020;
+  backdrop-filter: blur(8px);
 }
-
-@media (max-width: 760px) {
-  .app {
-    --dock-horizontal-padding: 12px;
-    --dock-vertical-padding: 10px;
-    --map-control-inset: 8px;
-  }
+.map-menu svg,
+.cards-bar svg,
+.zoom-reset svg {
+  width: 20px;
+  height: 20px;
 }
-
+.cards-bar {
+  position: absolute;
+  left: var(--screen-left);
+  bottom: var(--screen-bottom);
+  z-index: 7;
+  display: block;
+  width: auto;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+}
+.cards-bar button {
+  position: relative;
+  width: auto;
+  min-width: 44px;
+  gap: 5px;
+  padding: 0 9px;
+  font-size: 11px;
+}
+.map-hint {
+  top: var(--screen-top);
+  right: var(--screen-right);
+}
+.map-hint button {
+  width: 44px;
+  min-height: 44px;
+}
+.zoom-reset {
+  right: var(--screen-right);
+  bottom: var(--screen-bottom);
+}
+.floating-actions {
+  position: absolute;
+  left: 50%;
+  bottom: var(--screen-bottom);
+  transform: translateX(-50%);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  max-width: calc(100% - 2 * max(var(--screen-left), var(--screen-right)) - 128px);
+  padding: 10px;
+  border: 1px solid #39554b;
+  border-radius: 16px;
+  background: #203532f2;
+  color: #f5f5ee;
+  box-shadow: 0 6px 24px #152e2a30;
+  backdrop-filter: blur(12px);
+}
+.floating-actions .map-phase {
+  position: static;
+  transform: none;
+  max-width: 100%;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #bed7c7;
+  font: 500 10px var(--display);
+  letter-spacing: 0.5px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.floating-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+.floating-actions .action-card {
+  display: flex;
+  flex: none;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+.floating-actions .action-controls,
+.floating-actions .turn-actions,
+.floating-actions .attack-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  width: auto;
+  min-width: 0;
+}
+.floating-actions .action-controls {
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+.floating-actions .primary-button {
+  flex: none;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 12px;
+  border-radius: 9px;
+  font-size: 11px;
+  white-space: nowrap;
+  gap: 8px;
+}
+.floating-actions .phase-button {
+  position: static;
+  flex-direction: row;
+}
+.floating-actions .phase-button svg {
+  display: block;
+  position: static;
+  width: 18px;
+  height: 18px;
+}
+.floating-actions .button-full {
+  display: inline;
+}
+.floating-actions .button-short {
+  display: none;
+}
+.floating-actions .check-button {
+  width: 44px;
+  padding: 0;
+  background: #92d4bb;
+  color: #183b2f;
+}
+.floating-actions .troop-stepper {
+  gap: 6px;
+}
+.floating-actions .troop-stepper button {
+  width: 44px;
+  height: 44px;
+}
+.floating-actions .stepper-count {
+  width: auto;
+  min-width: 32px;
+}
+.floating-actions .stepper-count output {
+  font-size: max(16px, calc(30px - var(--digits) * 2px));
+}
+.floating-actions .max-button {
+  font-size: 10px;
+}
+.floating-actions .blitz-button {
+  background: #dce6d4;
+  color: #4b6d48;
+}
 @media (max-width: 600px) {
-  .app {
-    --dock-horizontal-padding: 8px;
-    --dock-vertical-padding: 9px;
+  .floating-actions {
+    max-width: calc(100% - 2 * max(var(--screen-left), var(--screen-right)) - 112px);
+    padding: 8px;
   }
-}
-
-@media (max-height: 700px) and (max-width: 760px) {
-  .app {
-    --header-height: 42px;
+  .floating-actions .primary-button {
+    padding: 0 10px;
+    font-size: 10px;
   }
-}
-
-@media (max-height: 500px) and (orientation: landscape) {
-  .app {
-    --header-height: 38px;
-    --dock-horizontal-padding: 12px;
-    --dock-vertical-padding: 7px;
+  .floating-actions .action-controls,
+  .floating-actions .attack-buttons {
+    gap: 6px;
+  }
+  .floating-actions .troop-stepper button {
+    width: 36px;
+  }
+  .floating-actions .check-button {
+    width: 36px;
   }
 }

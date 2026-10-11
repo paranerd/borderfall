@@ -1,4 +1,4 @@
-import { $, escape, icon } from './dom';
+import { $, escape } from './dom';
 import { getMap } from '../game/maps';
 import { territoriesOf, armiesOf, canAttack, connected, fortifyPreview } from '../game/engine';
 import type { Point, Territory } from '../game/types';
@@ -30,7 +30,6 @@ export function createMapView(
     $('#map-canvas').dataset.map = activeMap.id;
     $('.map-panel').setAttribute('aria-label', activeMap.name);
     $('.map-panel h1').textContent = `Borderfall – ${activeMap.name}`;
-    $('#map-name').textContent = activeMap.name;
     $('#world-map').setAttribute(
       'aria-label',
       `${TERRITORIES.length} Gebiete. Wähle ein Gebiet, um deinen Zug auszuführen.`,
@@ -217,28 +216,30 @@ export function createMapView(
     $('#scoreboard').innerHTML = g.players
       .map(
         (p) =>
-          `<div class="player-card ${g.turn === p.id ? 'active' : ''} ${p.alive ? '' : 'eliminated'}" style="--player:${p.color}" aria-label="${escape(p.name)}, ${territoriesOf(g, p.id).length} Gebiete, ${armiesOf(g, p.id)} Truppen${g.turn === p.id ? ', am Zug' : ''}"><div class="player-avatar">${p.symbol}</div><div><div class="player-name" title="${escape(p.name)}"><span class="player-name-text">${escape(p.name)}</span>${g.turn === p.id ? '<i class="active-dot"></i>' : ''}</div><div class="player-detail">${p.alive ? (p.id === 0 ? 'Kommandant' : 'Computer') : 'Besiegt'}</div></div><div class="player-metrics"><div class="metric"><strong>${territoriesOf(g, p.id).length}</strong><span data-short="Geb.">Gebiete</span></div><div class="metric"><strong>${armiesOf(g, p.id)}</strong><span data-short="Tr.">Truppen</span></div></div></div>`,
+          `<div class="player-card ${g.turn === p.id ? 'active' : ''} ${p.alive ? '' : 'eliminated'}" style="--player:${p.color};--player-light:${p.light}"><button class="player-avatar" data-action="stats" aria-controls="scoreboard" aria-expanded="false" aria-label="${escape(p.name)}, ${territoriesOf(g, p.id).length} Gebiete, ${armiesOf(g, p.id)} Truppen${g.turn === p.id ? ', am Zug' : ''}. Spielerübersicht einblenden" title="Spielerübersicht einblenden" data-player="${p.id}">${p.symbol}</button><div class="player-details"><div class="player-identity"><div class="player-name" title="${escape(p.name)}"><span class="player-name-text">${escape(p.name)}</span>${g.turn === p.id ? '<i class="active-dot"></i>' : ''}</div><div class="player-detail">${p.alive ? (p.id === 0 ? 'Kommandant' : 'Computer') : 'Besiegt'}</div></div><div class="player-metrics"><div class="metric"><strong>${territoriesOf(g, p.id).length}</strong><span>Gebiete</span></div><div class="metric"><strong>${armiesOf(g, p.id)}</strong><span>Truppen</span></div></div></div></div>`,
       )
       .join('');
     updateScoreboardVisibility();
   }
   function updateScoreboardVisibility() {
     const { g, started, selected, target, quantity, statsPreference, modal } = getState();
-    const collapsed = statsPreference ?? (window.innerWidth <= 600 || window.innerHeight < 450);
-    const widget = $('#scoreboard-widget'),
-      button = $('#scoreboard-toggle');
+    const collapsed = statsPreference ?? true;
+    const widget = $('#scoreboard-widget');
     widget.classList.toggle('collapsed', collapsed);
-    $('#scoreboard').hidden = collapsed;
-    button.setAttribute('aria-expanded', String(!collapsed));
-    button.setAttribute(
-      'aria-label',
-      collapsed ? 'Spielerübersicht einblenden' : 'Spielerübersicht ausblenden',
-    );
-    button.title = collapsed ? 'Spielerübersicht einblenden' : 'Spielerübersicht ausblenden';
-    const player = g.players[g.turn];
-    button.innerHTML = `<span class="stats-player-icon" style="--player:${player.color};--player-light:${player.light}" aria-hidden="true">${escape(player.symbol)}</span><span class="stats-chevron">${icon('chevron')}</span>`;
-    button.title = `${button.getAttribute('aria-label')} · ${player.name} ist am Zug`;
-    $('#map-canvas').style.setProperty('--stats-height', `${widget.offsetHeight}px`);
+    for (const button of widget.querySelectorAll<HTMLButtonElement>('.player-avatar')) {
+      const player = g.players[Number(button.dataset.player)];
+      const label = collapsed ? 'Spielerübersicht einblenden' : 'Spielerübersicht ausblenden';
+      button.setAttribute('aria-expanded', String(!collapsed));
+      button.setAttribute(
+        'aria-label',
+        `${player.name}, ${territoriesOf(g, player.id).length} Gebiete, ${armiesOf(g, player.id)} Truppen${g.turn === player.id ? ', am Zug' : ''}. ${label}`,
+      );
+      button.title = label;
+    }
+    for (const details of widget.querySelectorAll<HTMLElement>('.player-details')) {
+      details.inert = collapsed;
+      details.setAttribute('aria-hidden', String(collapsed));
+    }
   }
   function viewBox() {
     return { x: center.x - 610 / zoom, y: center.y - 360 / zoom, w: 1220 / zoom, h: 720 / zoom };

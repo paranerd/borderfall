@@ -1,116 +1,107 @@
-/* Map details in the header; a collapsible player overview in the map corner. */
-.topbar {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  gap: 12px;
-}
-.brand {
-  justify-self: start;
-}
-.header-actions {
-  justify-self: end;
-}
-.header-map {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  white-space: nowrap;
-}
-#map-name {
-  font: 500 16px var(--display);
-  letter-spacing: -0.2px;
-  color: #edf4e8;
-}
-#difficulty-label {
-  font-size: 9px;
-  letter-spacing: 0.7px;
-  color: #a7bcae;
-}
-.map-panel {
-  padding-top: 0;
-}
+/* All player icons stay visible while the shared detail drawer expands right. */
 .scoreboard-widget {
   position: absolute;
-  left: 12px;
-  bottom: 12px;
-  z-index: 4;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 7px;
-  width: 260px;
-  max-width: calc(100% - 24px);
-  pointer-events: none;
+  left: var(--screen-left);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 7;
+  width: min(304px, calc(100% - var(--screen-left) - var(--screen-right)));
+  transition: width 180ms ease;
+}
+.scoreboard-widget.collapsed {
+  width: 44px;
 }
 .scoreboard-widget .scoreboard {
+  position: static;
   display: flex;
   flex-direction: column;
-  position: static;
-  gap: 5px;
+  gap: 6px;
   width: 100%;
   height: auto;
   padding: 0;
   margin: 0;
-  pointer-events: auto;
 }
 .scoreboard-widget .player-card {
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: flex-start;
+  align-items: center;
   flex: none;
   width: 100%;
   max-width: none;
   min-width: 0;
-  height: 46px;
-  gap: 8px;
-  padding: 7px 10px;
-  border-radius: 9px;
-  background: #f6f7eff2;
-  border: 1px solid #c6d4c6;
+  height: 44px;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
   color: #263b2b;
-  box-shadow: 0 2px 8px #24492c0c;
+  border: 1px solid #c6d4c6;
+  border-radius: 12px;
+  background: #f6f8eff5;
+  box-shadow: 0 3px 12px #24492c18;
   backdrop-filter: blur(8px);
 }
 .scoreboard-widget .player-card.active {
-  background: #f9faf1;
   border-color: var(--player);
-  box-shadow: inset 3px 0 0 var(--player);
+  background: #f9faf1;
+  box-shadow:
+    0 0 0 2px var(--player-light),
+    0 3px 12px #24492c18;
 }
 .scoreboard-widget .player-card.eliminated {
   opacity: 0.55;
 }
 .scoreboard-widget .player-avatar {
   display: grid;
-  width: 25px;
-  height: 27px;
-  font-size: 14px;
-  border-radius: 7px;
-  flex: none;
+  place-items: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  font-size: 20px;
+  border-radius: 11px;
+  background: var(--player-light);
+  color: #263b2b;
 }
-.scoreboard-widget .player-card > div:not(.player-avatar) {
+.scoreboard-widget .player-avatar:focus-visible {
+  outline-offset: -4px;
+}
+.player-details {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: 8px;
+  padding: 0 10px;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 180ms ease,
+    visibility 180ms ease;
+}
+.collapsed .player-details {
+  opacity: 0;
+  visibility: hidden;
+}
+.player-identity {
+  flex: 1;
   min-width: 0;
 }
 .scoreboard-widget .player-name {
   font-size: 11px;
-  gap: 5px;
-  max-width: 100%;
 }
 .scoreboard-widget .player-detail {
   display: block;
   font-size: 8px;
-  color: #7c8c79;
+  color: #738571;
   margin-top: 2px;
 }
 .scoreboard-widget .player-metrics {
   display: flex;
   flex: none;
-  gap: 11px;
+  gap: 10px;
   margin-left: auto;
   width: auto;
-  justify-content: flex-end;
 }
 .scoreboard-widget .metric {
   display: block;
@@ -122,193 +113,14 @@
 .scoreboard-widget .metric span {
   display: block;
   font-size: 7px;
-  color: #7c8c79;
-  margin-top: 1px;
+  color: #738571;
 }
 .scoreboard-widget .metric span:after {
   content: none;
 }
-.scoreboard-toggle {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 32px;
-  padding: 0 10px;
-  border: 1px solid #b9cdbb;
-  border-radius: 8px;
-  background: #f6f8eff2;
-  color: #365c42;
-  font-size: 10px;
-  box-shadow: 0 2px 8px #173e2110;
-  pointer-events: auto;
-  white-space: nowrap;
-}
-.scoreboard-toggle > svg {
-  width: 15px;
-  height: 15px;
-}
-.stats-chevron {
-  display: grid;
-  place-items: center;
-}
-.stats-chevron svg {
-  width: 12px;
-  height: 12px;
-  transition: transform 0.15s;
-}
-.scoreboard-widget.collapsed .stats-chevron svg {
-  transform: rotate(180deg);
-}
-@media (max-width: 760px) {
-  .map-panel {
-    padding-top: 0;
-  }
-  .scoreboard-widget {
-    left: 8px;
-    bottom: 8px;
-    width: 224px;
-  }
-  .scoreboard-widget .player-card {
-    height: 40px;
-    padding: 5px 8px;
-  }
-  .scoreboard-widget .player-avatar {
-    width: 22px;
-    height: 24px;
-  }
-  .scoreboard-widget .metric strong {
-    font-size: 15px;
-  }
-}
-@media (max-width: 600px) {
-  .brand > span:last-child {
-    display: none;
-  }
-  #map-name {
-    font-size: 14px;
-  }
-  #difficulty-label {
-    font-size: 8px;
-    letter-spacing: 0.5px;
-  }
-  .scoreboard-widget {
-    width: 178px;
-    gap: 6px;
-  }
-  .scoreboard-widget .scoreboard {
-    gap: 4px;
-  }
-  .scoreboard-widget .player-card {
-    height: 36px;
-    padding: 4px 7px;
-    gap: 6px;
-    border-radius: 7px;
-  }
-  .scoreboard-widget .player-avatar {
-    display: none;
-  }
-  .scoreboard-widget .player-name {
-    font-size: 10px;
-  }
-  .scoreboard-widget .player-detail {
-    font-size: 7px;
-    margin-top: 1px;
-  }
-  .scoreboard-widget .player-metrics {
-    gap: 8px;
-  }
-  .scoreboard-widget .metric strong {
-    font-size: 14px;
-  }
-  .scoreboard-widget .metric span {
-    font-size: 6px;
-  }
-  .scoreboard-toggle {
-    min-height: 36px;
-    font-size: 9px;
-    padding: 0 9px;
-  }
-  .map-canvas:has(.scoreboard-widget:not(.collapsed)) .map-phase {
-    bottom: calc(var(--stats-height) + 18px);
-  }
-}
-@media (max-height: 500px) and (orientation: landscape) {
-  .map-panel {
-    padding-top: 0;
-  }
-  .scoreboard-widget {
-    width: 224px;
-    gap: 5px;
-  }
-  .scoreboard-widget .scoreboard {
-    gap: 3px;
-  }
-  .scoreboard-widget .player-card {
-    height: 30px;
-    padding: 3px 8px;
-    border-radius: 6px;
-  }
-  .scoreboard-widget .player-avatar {
-    display: none;
-  }
-  .scoreboard-widget .player-name {
-    font-size: 10px;
-  }
-  .scoreboard-widget .player-detail {
-    display: none;
-  }
-  .scoreboard-widget .player-metrics {
-    gap: 10px;
-  }
-  .scoreboard-widget .metric {
-    display: flex;
-    align-items: baseline;
-    gap: 3px;
-  }
-  .scoreboard-widget .metric strong {
-    font-size: 14px;
-  }
-  .scoreboard-widget .metric span {
-    font-size: 6px;
-  }
-  .scoreboard-toggle {
-    min-height: 30px;
-  }
-}
-.map-canvas:has(.scoreboard-widget:not(.collapsed)) .map-phase {
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
-  max-width: calc(100% - 600px);
-}
-@media (max-width: 760px) {
-  .map-canvas:has(.scoreboard-widget:not(.collapsed)) .map-phase {
-    max-width: calc(100% - 510px);
-  }
-}
-@media (max-width: 600px) {
-  .map-canvas:has(.scoreboard-widget:not(.collapsed)) .map-phase {
-    max-width: calc(100% - 28px);
-    bottom: calc(var(--stats-height) + 18px);
-  }
-}
-@media (max-width: 600px) and (orientation: portrait) {
-  .map-canvas:has(.scoreboard-widget:not(.collapsed)) #world-map {
-    height: calc(100% - var(--stats-height) - 56px);
-    min-height: 100px;
-  }
-}
-@media (max-height: 500px) and (orientation: landscape) {
-  .map-canvas:has(.scoreboard-widget:not(.collapsed)) #world-map {
-    margin-left: 244px;
-    width: calc(100% - 244px);
-    height: calc(100% - 56px);
-  }
-  .map-canvas:has(.scoreboard-widget:not(.collapsed)) .map-phase {
-    left: auto;
-    right: 48px;
-    transform: none;
-    max-width: calc(100% - 294px);
-    bottom: 8px;
+@media (prefers-reduced-motion: reduce) {
+  .scoreboard-widget,
+  .player-details {
+    transition: none;
   }
 }
