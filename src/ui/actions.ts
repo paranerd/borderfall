@@ -122,6 +122,7 @@ export function renderActions(state: ActionState) {
         : '';
       if (!target) action = phaseButton('next', 'Zum Verschieben', 'Weiter ohne Angriff?');
     } else {
+      const remaining = selected ? g.board[selected].armies - quantity : 0;
       title = g.fortified
         ? 'Truppen verschoben'
         : selected
@@ -133,7 +134,7 @@ export function renderActions(state: ActionState) {
         ? 'Deine Verschiebung ist abgeschlossen.'
         : selected
           ? target
-            ? `Vorschau: ${quantity} Truppen verschieben. Eine bleibt zurück.`
+            ? `Vorschau: ${quantity} Truppen verschieben. ${remaining === 1 ? '1 Truppe bleibt' : `${remaining} Truppen bleiben`} zurück.`
             : 'Wähle ein verbundenes eigenes Zielgebiet.'
           : 'Wähle ein eigenes Gebiet mit mindestens 2 Truppen.';
       if (!g.fortified && selected && target) {
