@@ -19,6 +19,7 @@ body {
   height: 100%;
   overflow: hidden;
   touch-action: pan-x pan-y;
+  overscroll-behavior: none;
   background: var(--map-background);
 }
 body {
@@ -70,7 +71,10 @@ a {
   display: none !important;
 }
 .app {
-  height: 100dvh;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   padding: 0 28px;
@@ -551,7 +555,7 @@ h1 {
 .modal-layer {
   position: fixed;
   inset: 0;
-  background: #0c201acd;
+  background: #e5ece6dd;
   backdrop-filter: blur(7px);
   z-index: 50;
   display: flex;
