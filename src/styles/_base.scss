@@ -1,6 +1,7 @@
 :root {
   --ink: #182b2b;
   --ink-soft: #263b3a;
+  --map-background: #e5ece6;
   --paper: #f5f5ee;
   --muted: #81918a;
   --green: #92d4bb;
@@ -18,9 +19,9 @@ body {
   height: 100%;
   overflow: hidden;
   touch-action: pan-x pan-y;
+  background: var(--map-background);
 }
 body {
-  background: var(--ink);
   color: var(--paper);
   font-family: var(--font);
   font-size: 14px;
@@ -222,7 +223,7 @@ a {
   min-height: 0;
   border-radius: 18px;
   overflow: hidden;
-  background: #e5ece6;
+  background: var(--map-background);
   color: var(--ink);
   border: 1px solid #cedcd1;
 }
