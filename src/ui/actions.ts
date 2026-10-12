@@ -11,7 +11,7 @@ interface ActionState {
   lastBattle: BattleResult | null;
   phaseConfirmation: PhaseConfirmation | null;
 }
-export function renderActions(state: ActionState, updateHintContext: (context: string) => void) {
+export function renderActions(state: ActionState) {
   const { g, selected, target, quantity, lastBattle, phaseConfirmation } = state;
   const activeMap = getMap(g),
     TERRITORIES = activeMap.territories,
@@ -120,7 +120,7 @@ export function renderActions(state: ActionState, updateHintContext: (context: s
       controls = ready
         ? `<div class="attack-buttons"><button class="primary-button" data-action="attack" aria-label="Angreifen" title="Manueller Angriff mit sichtbaren Würfeln"><span class="button-full">Angreifen</span><span class="button-short" aria-hidden="true">Wurf</span>${icon('attack')}</button><button class="primary-button blitz-button" data-action="blitz" title="Kämpft bis zur Eroberung oder bis nur eine eigene Truppe bleibt" aria-label="Blitzangriff"><span class="button-full">Blitzangriff</span><span class="button-short" aria-hidden="true">Blitz</span>${icon('blitz')}</button></div>`
         : '';
-      action = phaseButton('next', 'Zum Verschieben', 'Weiter ohne Angriff?');
+      if (!target) action = phaseButton('next', 'Zum Verschieben', 'Weiter ohne Angriff?');
     } else {
       title = g.fortified
         ? 'Truppen verschoben'
@@ -146,9 +146,10 @@ export function renderActions(state: ActionState, updateHintContext: (context: s
         );
         controls += checkButton('fortify', 'Truppen verschieben', !target);
       }
-      action = g.fortified
-        ? `<button class="primary-button phase-button" data-action="end" aria-label="Zug beenden" title="Zug beenden"><span class="button-full">Zug beenden</span><span class="button-short" aria-hidden="true">Zugende</span>${icon('arrow')}</button>`
-        : phaseButton('end', 'Zug beenden', 'Wirklich beenden?');
+      if (!target)
+        action = g.fortified
+          ? `<button class="primary-button phase-button" data-action="end" aria-label="Zug beenden" title="Zug beenden"><span class="button-full">Zug beenden</span><span class="button-short" aria-hidden="true">Zugende</span>${icon('arrow')}</button>`
+          : phaseButton('end', 'Zug beenden', 'Wirklich beenden?');
     }
     $('#action-card').dataset.phase = g.pending ? 'conquest' : phase;
     $('#action-card').setAttribute('aria-label', `${title}. ${desc}`);
@@ -179,8 +180,6 @@ export function renderActions(state: ActionState, updateHintContext: (context: s
           : desc;
     $('#hint-content').innerHTML =
       `<span class="hint-text">${escape(hints)}</span>${human && phase === 'attack' && !g.pending ? battleMarkup() : ''}`;
-    const context = `${g.turn}:${phase}:${!!g.pending}:${g.winner}`;
-    updateHintContext(context);
   }
 
   renderAction();

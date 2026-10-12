@@ -42,10 +42,8 @@ import type { GameState, BattleResult } from '../game/types';
 import type { Platform } from '../platform';
 
 export async function startApplication(platform: Platform) {
-  $('#help-button').innerHTML = icon('book');
   $('#menu-button').innerHTML = icon('menu');
   $('#zoom-reset').innerHTML = icon('fit');
-  $('#hint-toggle').innerHTML = icon('help');
 
   let saved: GameState | null = null;
   try {
@@ -86,7 +84,6 @@ export async function startApplication(platform: Platform) {
     if (stored === 'true' || stored === 'false') statsPreference = stored === 'true';
   } catch {}
 
-  let hintContext: string | null = null;
   let priorFocus: HTMLElement | SVGElement | null = null,
     storageWarningShown = false,
     phaseConfirmation: PhaseConfirmation | null = null,
@@ -143,12 +140,21 @@ export async function startApplication(platform: Platform) {
   }
 
   function renderAction() {
-    renderActions({ g, selected, target, quantity, lastBattle, phaseConfirmation }, (context) => {
-      if (context !== hintContext) {
-        hintContext = context;
-        collapseHint();
-      }
-    });
+    renderActions({ g, selected, target, quantity, lastBattle, phaseConfirmation });
+  }
+  function setStatsCollapsed(collapsed: boolean) {
+    statsPreference = collapsed;
+    savePreference('weltmacht.statsCollapsed', String(collapsed));
+    updateScoreboardVisibility();
+    positionBonuses();
+  }
+  function closeStatsOutside(event: Event) {
+    if (
+      event.target instanceof Element &&
+      !event.target.closest('#scoreboard-widget') &&
+      !$('#scoreboard-widget').classList.contains('collapsed')
+    )
+      setStatsCollapsed(true);
   }
   function render() {
     const focusedAction = document.activeElement?.closest<HTMLElement>(
@@ -156,8 +162,8 @@ export async function startApplication(platform: Platform) {
     )?.dataset.action;
     renderScoreboard();
     updateMap();
-    updateBonuses();
     renderAction();
+    updateBonuses();
     save();
     if (focusedAction) {
       const button = document.querySelector<HTMLButtonElement>(
@@ -225,23 +231,8 @@ export async function startApplication(platform: Platform) {
   }
 
   async function handleAction(action: Action) {
-    if (action === 'hint') {
-      const button = $('#hint-toggle'),
-        expanded = button.getAttribute('aria-expanded') !== 'true';
-      button.setAttribute('aria-expanded', String(expanded));
-      button.setAttribute(
-        'aria-label',
-        expanded ? 'Spielhinweis einklappen' : 'Spielhinweis anzeigen',
-      );
-      $('#hint-content').hidden = !expanded;
-      $('#map-hint').classList.toggle('expanded', expanded);
-      return;
-    }
     if (action === 'stats') {
-      statsPreference = !$('#scoreboard-widget').classList.contains('collapsed');
-      savePreference('weltmacht.statsCollapsed', String(statsPreference));
-      updateScoreboardVisibility();
-      positionBonuses();
+      setStatsCollapsed(!$('#scoreboard-widget').classList.contains('collapsed'));
       return;
     }
     if (action === 'cards') {
@@ -519,7 +510,6 @@ export async function startApplication(platform: Platform) {
     renderAction();
     clearTimeout(botTimer);
     modal = type;
-    collapseHint();
     $('.app').inert = true;
     $('#modal-layer').classList.toggle('combat-layer', type === 'battle');
     if (type === 'cards') {
@@ -542,7 +532,6 @@ export async function startApplication(platform: Platform) {
     $('#modal-layer').classList.remove('combat-layer');
     if (priorFocus?.isConnected) priorFocus.focus();
     else $('#menu-button').focus();
-    collapseHint();
     scheduleBot();
     if (wasBattle && g.winner !== null) openModal('victory');
   }
@@ -749,17 +738,14 @@ export async function startApplication(platform: Platform) {
     if (event.target instanceof HTMLInputElement && event.target.id === 'player-name')
       setup.playerName = event.target.value;
   });
+  document.addEventListener('pointerdown', closeStatsOutside, { capture: true, passive: true });
   document.addEventListener('click', (event) => {
     if (!(event.target instanceof Element)) return;
+    closeStatsOutside(event);
     const el = event.target.closest<HTMLButtonElement>('[data-action]');
     if (el && !el.disabled && isAction(el.dataset.action)) void handleAction(el.dataset.action);
   });
   $('#menu-button').addEventListener('click', () => openModal(started ? 'menu' : 'setup'));
-  function openHelp() {
-    helpPage = 0;
-    openModal('help');
-  }
-  $('#help-button').addEventListener('click', openHelp);
   function toggleSound() {
     sound = !sound;
     savePreference('weltmacht.sound', String(sound));
@@ -825,23 +811,6 @@ export async function startApplication(platform: Platform) {
     }
   });
 
-  function collapseHint() {
-    $('#map-hint').classList.remove('expanded');
-    $('#hint-content').hidden = true;
-    $('#hint-toggle').setAttribute('aria-expanded', 'false');
-    $('#hint-toggle').setAttribute('aria-label', 'Spielhinweis anzeigen');
-  }
-  for (const eventType of ['pointerdown', 'pointermove', 'wheel', 'keydown', 'input']) {
-    document.addEventListener(
-      eventType,
-      (event) => {
-        if (event.target instanceof Element && event.target.closest('#map-hint')) return;
-        collapseHint();
-      },
-      { capture: true, passive: true },
-    );
-  }
-
   window.addEventListener('resize', () => {
     updateScoreboardVisibility();
     positionBonuses();
@@ -855,7 +824,6 @@ export async function startApplication(platform: Platform) {
   new ResizeObserver(positionBonuses).observe($('#scoreboard-widget'));
   let pausedAnimations: Animation[] = [];
   platform.lifecycle.subscribe((active) => {
-    collapseHint();
     if (!active) {
       clearTimeout(botTimer);
       platform.audio.pause();

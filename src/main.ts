@@ -10,8 +10,10 @@ import './styles/main.scss';
 import { createBrowserPlatform } from './platform';
 import { startApplication } from './application/controller';
 import { registerUpdates } from './pwa/register';
+import { lockInterfaceZoom } from './ui/viewport';
 
 async function main() {
+  lockInterfaceZoom();
   const application = await startApplication(createBrowserPlatform());
   registerUpdates(application);
 }

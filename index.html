@@ -2,7 +2,10 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
     <meta name="theme-color" content="#182b2b" />
     <meta
       name="description"
@@ -20,18 +23,12 @@
         <section class="map-panel" aria-label="Weltkarte">
           <h1 class="sr-only">Borderfall – Weltkarte</h1>
           <div class="map-canvas" id="map-canvas">
-            <nav class="map-menu" aria-label="Spielmenü und Handbuch">
+            <nav class="map-menu" aria-label="Spielmenü">
               <button
                 class="icon-button"
                 id="menu-button"
                 aria-label="Spielmenü öffnen"
                 title="Menü"
-              ></button>
-              <button
-                class="icon-button"
-                id="help-button"
-                aria-label="Spielregeln öffnen"
-                title="Spielregeln"
               ></button>
             </nav>
             <svg
@@ -56,15 +53,8 @@
               <section class="scoreboard" id="scoreboard" aria-label="Spielerübersicht"></section>
             </div>
             <div class="map-tooltip" id="map-tooltip" hidden></div>
-            <div class="map-hint" id="map-hint">
-              <div class="hint-content" id="hint-content" hidden></div>
-              <button
-                id="hint-toggle"
-                data-action="hint"
-                aria-label="Spielhinweis anzeigen"
-                aria-controls="hint-content"
-                aria-expanded="false"
-              ></button>
+            <div class="map-hint" id="map-hint" role="status" aria-live="polite" aria-atomic="true">
+              <div class="hint-content" id="hint-content"></div>
             </div>
             <div class="cards-bar" id="cards-bar"></div>
             <nav class="floating-actions" aria-label="Spielaktionen">

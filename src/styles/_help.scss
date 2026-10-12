@@ -68,21 +68,6 @@
   overflow: hidden;
   touch-action: manipulation;
 }
-.map-hint button {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 36px;
-  min-height: 36px;
-  background: transparent;
-  color: #365c42;
-  padding: 0;
-  border-radius: 9px;
-}
-.map-hint button svg {
-  width: 20px;
-  height: 20px;
-}
 .hint-content {
   display: flex;
   flex-direction: column;

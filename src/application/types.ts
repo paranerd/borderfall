@@ -1,7 +1,6 @@
 import type { BattleResult, GameState, MapId, Difficulty, Point } from '../game/types';
 export type ModalType = 'setup' | 'menu' | 'help' | 'cards' | 'battle' | 'defeat' | 'victory';
 export type Action =
-  | 'hint'
   | 'stats'
   | 'cards'
   | 'new'
@@ -16,7 +15,6 @@ export type Action =
   | 'fortify'
   | 'end';
 const actions: readonly string[] = [
-  'hint',
   'stats',
   'cards',
   'new',

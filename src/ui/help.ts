@@ -4,7 +4,7 @@ export const HELP = [
     title: 'Erobere die ganze Karte.',
     text: 'Erobere alle Gebiete und besiege die Computergegner. Jeder Zug hat drei Phasen: Verstärken, Angreifen und Verschieben.',
     text2:
-      'Wähle Gebiete direkt auf der Karte. Markierte Grenzen zeigen mögliche Ziele. Zoome mit dem Mausrad oder ziehe zwei Finger auseinander / zusammen. Auch + / − auf der Tastatur funktioniert. Ziehe die Karte zum Verschieben. Nach Zoomen oder Verschieben setzt der Button unten rechts die gesamte Kartenansicht zurück. Oben rechts steht immer ein Fragezeichen bereit; tippe darauf, um den aktuellen Spielhinweis aufzuklappen.',
+      'Wähle Gebiete direkt auf der Karte. Markierte Grenzen zeigen mögliche Ziele. Zoome mit dem Mausrad oder ziehe zwei Finger auseinander / zusammen. Auch + / − auf der Tastatur funktioniert. Ziehe die Karte zum Verschieben. Nach Zoomen oder Verschieben setzt der Button unten rechts die gesamte Kartenansicht zurück. Der aktuelle Spielhinweis steht dauerhaft oben mittig.',
     example: '<b>1 → 2 → 3</b> Verstärken · Angreifen · Verschieben',
   },
   {
